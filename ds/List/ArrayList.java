@@ -97,14 +97,32 @@ public class ArrayList<E> implements ListInterface<E>{
 
     @Override
     public boolean remove(E item) {
-        // TODO Auto-generated method stub
-        return false;
+        int index = -1;
+        for(int i=0; i<size; i++) {
+            if(arrayList[i]==item){
+                index = i;
+                break;
+            }
+        }
+
+        if(index==-1) {
+            return false;
+        }
+
+        return remove(index);
     }
 
     @Override
     public boolean remove(int index) {
-        // TODO Auto-generated method stub
-        return false;
+        if(index>=size){
+            throw new ArrayIndexOutOfBoundsException(index);
+        }
+        
+        for(int i=index; i<size; i++){
+            arrayList[i] = arrayList[i+1];
+        }
+        size--;
+        return true;
     }
 
     @Override
