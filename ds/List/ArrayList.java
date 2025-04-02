@@ -3,47 +3,96 @@ package com.example.dsa_java.dsa.ds.List;
 import com.example.dsa_java.dsa.ds.common.IteratorInterface;
 
 public class ArrayList<E> implements ListInterface<E>{
+    private int capacity;
+    private int size;
+    private E[] arrayList = null;
 
-    @Override
-    public String toString() {
-        // TODO Auto-generated method stub
-        return super.toString();
+    public ArrayList() {
+        setInitial();
+    }
+    
+    @SuppressWarnings("unchecked")
+    public void setInitial(){
+        capacity = 2;
+        size = 0;
+
+        arrayList = (E[]) new Object[capacity];
+    }
+    
+    @SuppressWarnings("unchecked")
+    private void addCapacity(){
+        capacity = capacity*capacity;
+
+        E[] tempList = (E[]) new Object[capacity];
+
+        for(int i=0; i<size; i++){
+            tempList[i] = arrayList[i];
+        }
+        arrayList = tempList;
+    }
+
+    public boolean isEmpty(){
+        return size == 0;
+    }
+
+    public int size(){
+        return size;
+    }
+
+    public int getCapacity(){
+        return capacity;
     }
 
     @Override
-    public void add(int index, E item) {
-        // TODO Auto-generated method stub
-        
+    public String toString() {
+        return  arrayList.toString();
     }
 
     @Override
     public E get(int index) {
-        // TODO Auto-generated method stub
-        return null;
-    }
+        if(index>=size){
+            throw new ArrayIndexOutOfBoundsException(index);
+        }
 
-    @Override
-    public boolean remove(int index) {
-        // TODO Auto-generated method stub
-        return false;
+        return arrayList[index];
     }
 
     @Override
     public void set(int index, E item) {
-        // TODO Auto-generated method stub
-        
+        if(index>=size){
+            throw new ArrayIndexOutOfBoundsException(index);
+        }
+
+        arrayList[index] = item;
+    }
+
+    @Override
+    public void add(int index, E item) {
+        if(size + 1 > capacity){
+            addCapacity();
+        }
+
+        for(int i=size-1; i>=index; i++){
+            arrayList[i+1] = arrayList[i];
+        }
+
+        arrayList[index] = item;
+        size++;
     }
 
     @Override
     public void add(E item) {
-        // TODO Auto-generated method stub
-        
+        if(size+1 > capacity) {
+            addCapacity();
+        }
+
+        arrayList[size] = item;
+        size++;
     }
 
     @Override
     public void clear() {
-        // TODO Auto-generated method stub
-        
+        setInitial();
     }
 
     @Override
@@ -53,9 +102,15 @@ public class ArrayList<E> implements ListInterface<E>{
     }
 
     @Override
-    public IteratorInterface<E> getIterator() {
+    public boolean remove(int index) {
         // TODO Auto-generated method stub
-        return null;
+        return false;
+    }
+
+    @Override
+    public IteratorInterface<E> getIterator() {
+        ListIterator<E> li = new ListIterator<E>(arrayList);
+        return li;
     }
 
 }
